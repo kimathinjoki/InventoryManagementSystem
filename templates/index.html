@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1> Browsers </h1>
+
+    <div id="chart">
+   <embed type="image/svg+xml" src= {{ pie|safe }} /></div>
+
+    <div id="chart">
+   <embed type="image/svg+xml" src= {{ line|safe }} /></div>
+{% endblock %}
