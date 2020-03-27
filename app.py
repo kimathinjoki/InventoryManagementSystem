@@ -120,7 +120,18 @@ def inventory():
 
     inventories = New_inventory.fetch_records()
     # print(inventories)
+    cursor.execute("""SELECT inventory_id, sum(quantity) as "stock"
+       FROM ((SELECT st.inventory_id, sum(stock) as "quantity"
+       FROM public.add_stock as st
+       GROUP BY inventory_id) union all
+           (SELECT sa.inventory_id, - sum(quantity) as "quantity"
+       FROM public.new_sale as sa
+       GROUP BY inventory_id) 
+           ) stsa
+       GROUP BY inventory_id
+       ORDER BY inventory_id;""")
 
+    available_stock = cursor.fetchall()
 
 
     if request.method == 'POST':
@@ -139,7 +150,7 @@ def inventory():
 
         return redirect(url_for('inventory'))
 
-    return render_template('inventory.html',inventories = inventories)
+    return render_template('inventory.html',inventories = inventories,available_stock=available_stock)
 
 # deleting an item
 @app.route('/inventory/delete/<int:id>', methods=["GET","POST"])

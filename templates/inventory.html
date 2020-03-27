@@ -116,7 +116,11 @@
             <td>{{ each.type }}</td>
             <td>{{ each.buying_price }}</td>
             <td>{{ each.selling_price }}</td>
-            <td>{{ each.stock }}</td>
+            <td> {% for st in available_stock %}
+                            {% if st[0] == each.id %}
+                                {{ st[1] }}
+                            {% endif %}
+                        {% endfor %}</td>
             <td>
               <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addstock">Add Stock</button>
                 <!-- Modal -->
