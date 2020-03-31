@@ -207,11 +207,22 @@ def view_sales(id):
     return render_template('views.html', sales=sales)
 
 
+# edit inventory
+@app.route('/inventory/update/<int:id>', methods=['POST','GET'])
+def update(id):
+    record = New_inventory.fetch_by_id(id)
+
+    if request.method== 'POST':
+
+        record.name = request.form['name']
+        record.type = request.form['type']
+        record.buying_price = request.form['buying_price']
+        record.selling_price = request.form['selling_price']
 
 
+        db.session.commit()
 
-
-
+        return redirect(url_for('inventory'))
 
 
 
